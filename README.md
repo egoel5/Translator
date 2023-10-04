@@ -19,7 +19,7 @@ The following **extensions** are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![]()
+![](https://github.com/egoel5/C323_Project5/blob/master/Project%205%20Video%20Walkthrough.gif)
 
 GIF created with [Adobe Express](https://new.express.adobe.com).
 
