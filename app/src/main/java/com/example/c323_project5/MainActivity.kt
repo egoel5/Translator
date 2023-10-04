@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import com.example.c323_project5.databinding.ActivityMainBinding
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
@@ -15,6 +16,7 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
+    // lateinit some Views that need to be initialized in onCreate to make sure they are never null
     lateinit var engSrc : RadioButton
     lateinit var spnSrc : RadioButton
     lateinit var gerSrc : RadioButton
@@ -23,19 +25,32 @@ class MainActivity : AppCompatActivity() {
     lateinit var gerTrn : RadioButton
     lateinit var tvTranslation : TextView
     lateinit var textToTranslate : EditText
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        engSrc = findViewById(R.id.eng_src_but)
-        spnSrc = findViewById(R.id.spn_src_but)
-        gerSrc = findViewById(R.id.ger_src_but)
-        engTrn = findViewById(R.id.eng_trn_but)
-        spnTrn = findViewById(R.id.spn_trn_but)
-        gerTrn = findViewById(R.id.ger_trn_but)
-        tvTranslation = findViewById(R.id.tvTranslation)
-        textToTranslate = findViewById(R.id.textToTranslate)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        // initialize all the ViewModels that needed to be initialized
+        engSrc = binding.engSrcBut
+        spnSrc = binding.spnSrcBut
+        gerSrc = binding.gerSrcBut
+        engTrn = binding.engTrnBut
+        spnTrn = binding.spnTrnBut
+        gerTrn = binding.gerTrnBut
+        tvTranslation = binding.tvTranslation
+        textToTranslate = binding.textToTranslate
 
+        /**
+         * textChangedListened using TextWatcher to accurately translate text based on user chosen
+         * languages
+         *
+         * For each non-duplicate selection, the TranslatorOptions is built setting sourceLanguage
+         * and TargetLanguage to user selection, then the conditions are downloaded, then the text
+         * is translated, and if the translation is successful, tvTranslation's text is set to
+         * translated text
+         */
         textToTranslate.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -142,7 +157,6 @@ class MainActivity : AppCompatActivity() {
                     tvTranslation.text = textToTranslate.text
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {
 
             }

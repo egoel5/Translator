@@ -37,7 +37,7 @@
             android:id="@+id/source_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="110sp"
+            android:paddingRight="50dp"
             android:paddingLeft="5sp">
             <RadioButton
                 android:layout_width="wrap_content"
@@ -54,6 +54,11 @@
                 android:layout_height="wrap_content"
                 android:text="German"
                 android:id="@+id/ger_src_but"></RadioButton>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Detect Language"
+                android:id="@+id/det_src_but"></RadioButton>
         </RadioGroup>
         <RadioGroup
             android:layout_width="wrap_content"
@@ -86,8 +91,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Translation"
+            android:paddingLeft="5dp"
             android:textSize="17dp"
-            android:height="300dp">
+            android:height="275dp">
         </TextView>
     </LinearLayout>
     <LinearLayout
@@ -98,7 +104,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Write Something..."
-            android:height="300dp"></EditText>
+            android:padding="5dp"
+            android:height="275dp"></EditText>
     </LinearLayout>
 
 </LinearLayout>
