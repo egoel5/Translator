@@ -21,7 +21,7 @@ Here's a walkthrough of implemented user stories:
 
 ![]()
 
-GIF created with [Adobe Express](http://www.cockos.com/licecap/).
+GIF created with [Adobe Express](https://new.express.adobe.com).
 
 ## Notes
 
