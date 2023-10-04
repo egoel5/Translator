@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import com.example.c323_project5.databinding.ActivityMainBinding
 import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.languageid.LanguageIdentification
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var engSrc : RadioButton
     lateinit var spnSrc : RadioButton
     lateinit var gerSrc : RadioButton
+    lateinit var detSrc : RadioButton
     lateinit var engTrn : RadioButton
     lateinit var spnTrn : RadioButton
     lateinit var gerTrn : RadioButton
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         engSrc = binding.engSrcBut
         spnSrc = binding.spnSrcBut
         gerSrc = binding.gerSrcBut
+        detSrc = binding.detSrcBut
         engTrn = binding.engTrnBut
         spnTrn = binding.spnTrnBut
         gerTrn = binding.gerTrnBut
@@ -155,6 +159,84 @@ class MainActivity : AppCompatActivity() {
                 }
                 else if (gerSrc.isChecked && gerTrn.isChecked) {
                     tvTranslation.text = textToTranslate.text
+                }
+                else if (detSrc.isChecked && engTrn.isChecked) {
+                    val languageIdentifier = LanguageIdentification.getClient()
+                    languageIdentifier.identifyLanguage(textToTranslate.text.toString())
+                        .addOnSuccessListener { languageCode ->
+                            if (languageCode == "und") {
+                                Log.v("undLang", "Can't identify language.")
+                            } else {
+                                val options = TranslatorOptions.Builder()
+                                    .setSourceLanguage(TranslateLanguage.fromLanguageTag(languageCode).toString())
+                                    .setTargetLanguage(TranslateLanguage.ENGLISH)
+                                    .build()
+                                val detectEnglishTranslator = Translation.getClient(options)
+                                var conditions = DownloadConditions.Builder()
+                                    .requireWifi()
+                                    .build()
+                                detectEnglishTranslator.downloadModelIfNeeded(conditions)
+                                detectEnglishTranslator.translate(textToTranslate.text.toString())
+                                    .addOnSuccessListener { translatedText ->
+                                        tvTranslation.text = translatedText
+                                    }
+                            }
+                        }
+                        .addOnFailureListener {
+                            Log.v("err", "Unidentified error")
+                        }
+                }
+                else if (detSrc.isChecked && spnTrn.isChecked) {
+                    val languageIdentifier = LanguageIdentification.getClient()
+                    languageIdentifier.identifyLanguage(textToTranslate.text.toString())
+                        .addOnSuccessListener { languageCode ->
+                            if (languageCode == "und") {
+                                Log.v("undLang", "Can't identify language.")
+                            } else {
+                                val options = TranslatorOptions.Builder()
+                                    .setSourceLanguage(TranslateLanguage.fromLanguageTag(languageCode).toString())
+                                    .setTargetLanguage(TranslateLanguage.SPANISH)
+                                    .build()
+                                val detectSpanishTranslator = Translation.getClient(options)
+                                var conditions = DownloadConditions.Builder()
+                                    .requireWifi()
+                                    .build()
+                                detectSpanishTranslator.downloadModelIfNeeded(conditions)
+                                detectSpanishTranslator.translate(textToTranslate.text.toString())
+                                    .addOnSuccessListener { translatedText ->
+                                        tvTranslation.text = translatedText
+                                    }
+                            }
+                        }
+                        .addOnFailureListener {
+                            Log.v("err", "Unidentified error")
+                        }
+                }
+                else if (detSrc.isChecked && gerTrn.isChecked) {
+                    val languageIdentifier = LanguageIdentification.getClient()
+                    languageIdentifier.identifyLanguage(textToTranslate.text.toString())
+                        .addOnSuccessListener { languageCode ->
+                            if (languageCode == "und") {
+                                Log.v("undLang", "Can't identify language.")
+                            } else {
+                                val options = TranslatorOptions.Builder()
+                                    .setSourceLanguage(TranslateLanguage.fromLanguageTag(languageCode).toString())
+                                    .setTargetLanguage(TranslateLanguage.GERMAN)
+                                    .build()
+                                val detectGermanTranslator = Translation.getClient(options)
+                                var conditions = DownloadConditions.Builder()
+                                    .requireWifi()
+                                    .build()
+                                detectGermanTranslator.downloadModelIfNeeded(conditions)
+                                detectGermanTranslator.translate(textToTranslate.text.toString())
+                                    .addOnSuccessListener { translatedText ->
+                                        tvTranslation.text = translatedText
+                                    }
+                            }
+                        }
+                        .addOnFailureListener {
+                            Log.v("err", "Unidentified error")
+                        }
                 }
             }
             override fun afterTextChanged(p0: Editable?) {
